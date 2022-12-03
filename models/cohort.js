@@ -5,7 +5,6 @@ const CohortSchema = Schema({
   code: {
     type: String,
     required: true,
-    // Combinación automática de año, carrera, etc. Por afinar.
   },
   description: {
     type: String,
@@ -13,13 +12,12 @@ const CohortSchema = Schema({
   duration: {
     type: Number,
     required: [true, 'La duración es requerida'],
-    // medida de tiempo: semanas
   },
   quantity: {
     type: Number,
     required: [true, 'La cantidad es requerida'],
   },
-  imgUrl: {
+  img: {
     type: String,
   },
   careers: {
@@ -52,10 +50,12 @@ const CohortSchema = Schema({
 CohortSchema.methods.toJSON = function () {
   const { __v, _id, status, createdAt, updatedAt, ...cohort } = this.toObject()
 
-  cohort.createdAt = DateTime.fromJSDate(createdAt,{zone: 'America/Bogota'})
+  cohort.createdAt = DateTime.fromJSDate(createdAt, { zone: 'America/Bogota' })
 
-  // cohort.createdAt = DateTime.fromISO(createdAt.toISOString())
-  if (updatedAt) cohort.updatedAt = DateTime.fromJSDate(updatedAt,{zone: 'America/Bogota'})
+  if (updatedAt)
+    cohort.updatedAt = DateTime.fromJSDate(updatedAt, {
+      zone: 'America/Bogota',
+    })
 
   cohort.careers = cohort.careers.map((career) => {
     const { _id: c_id, __v: c__v, status, ...rest } = career
